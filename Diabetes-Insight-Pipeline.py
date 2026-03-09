@@ -1,12 +1,14 @@
 import pandas as pd
 import time
 import os
+from dotenv import load_dotenv
 from google import genai
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 # --- CONFIGURAÇÃO ---
+load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
@@ -79,3 +81,4 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"\n⚠️ Erro persistente na API: {e}")
+
