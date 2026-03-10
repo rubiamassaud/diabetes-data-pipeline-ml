@@ -1,24 +1,114 @@
-# Pipeline de Predição de Diabetes: ETL & Machine Learning
+# 🩺 Diabetes Insight Pipeline
 
-Este projeto desenvolve uma pipeline completa de processamento de dados e análise preditiva para o diagnóstico de diabetes. O foco principal é demonstrar boas práticas de **Engenharia de Dados** e a aplicação de modelos de **Machine Learning** supervisionado.
+Pipeline que treina um modelo de classificação de diabetes e gera interpretações em linguagem natural usando IA generativa (Gemini).
 
-## 🛠️ Tecnologias e Ferramentas
-* **Linguagem:** Python
-* **Manipulação de Dados:** Pandas, Numpy
-* **Machine Learning:** Scikit-Learn (KNN, Logistic Regression)
-* **Gestão de Ambiente:** Virtualenv & Git
+---
 
-## 📈 Pipeline de Dados (Fluxo de Trabalho)
-1. **Extração:** Leitura de dados clínicos via CSV.
-2. **Transformação (ETL):** Tratamento de valores inconsistentes e normalização de features.
-3. **Modelagem:** Treinamento comparativo entre algoritmos de classificação.
-4. **Avaliação:** Comparação de acurácia entre modelos para suporte à decisão.
+## 💡 Como funciona
 
-## 🚀 Como executar
-1. Clone o repositório: `git clone https://github.com/seu-usuario/diabetes-data-pipeline-ml.git`
-2. Crie um ambiente virtual: `python -m venv venv`
-3. Instale as dependências: `pip install -r requirements.txt`
-4. Execute o script: `python previsao-diabetes.py`
+1. Carrega um dataset de diabetes em CSV
+2. Treina um modelo de **Regressão Logística** com as features mais relevantes
+3. Envia os pesos aprendidos para o **Gemini 2.0 Flash**
+4. Retorna uma análise interpretativa dos fatores de risco em linguagem humana
 
-## 📊 Resultados
-O projeto compara a performance dos modelos KNN e Regressão Logística, permitindo identificar qual algoritmo apresenta melhor generalização para este conjunto de dados.
+---
+
+## 🗂️ Estrutura do projeto
+
+```
+diabetes-insight-pipeline/
+│
+├── diabetes_insight_pipeline.py  # Pipeline principal
+├── diabetes.csv                  # Dataset de entrada
+├── .env                          # Variáveis de ambiente (não versionar)
+├── requirements.txt              # Dependências do projeto
+└── README.md
+```
+
+---
+
+## ⚙️ Instalação
+
+**1. Clone o repositório**
+```bash
+git clone https://github.com/rubiamassaud/diabetes-insight-pipeline.git
+cd diabetes-insight-pipeline
+```
+
+**2. Crie e ative um ambiente virtual**
+```bash
+python -m venv venv
+source venv/bin/activate      # Linux/macOS
+venv\Scripts\activate         # Windows
+```
+
+**3. Instale as dependências**
+```bash
+pip install -r requirements.txt
+```
+
+**4. Configure a variável de ambiente**
+
+Crie um arquivo `.env` na raiz do projeto:
+```env
+GEMINI_API_KEY=sua_chave_aqui
+```
+> Obtenha sua chave em [Google AI Studio](https://aistudio.google.com/app/apikey)
+
+---
+
+## ▶️ Uso
+
+```bash
+python diabetes_insight_pipeline.py
+```
+
+**Saída esperada:**
+```
+⚙️ Treinando modelo...
+✅ Acurácia: 77.92%
+
+🤖 Gerando Insight com IA...
+⏳ Aguardando 10 segundos para respeitar a cota...
+------------------------------
+[Análise do Gemini sobre os fatores de risco]
+------------------------------
+```
+
+---
+
+## 📊 Features utilizadas no modelo
+
+| Feature | Descrição |
+|---|---|
+| `Glucose` | Concentração de glicose no plasma |
+| `BMI` | Índice de massa corporal |
+| `Age` | Idade do paciente |
+| `DiabetesPedigreeFunction` | Histórico familiar de diabetes |
+
+---
+
+## 📦 Dependências
+
+```
+pandas
+scikit-learn
+python-dotenv
+google-genai
+```
+
+---
+
+## 📁 Dataset
+
+O projeto utiliza o [Pima Indians Diabetes Dataset](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database), disponível no Kaggle.
+
+---
+
+## 🤖 Tecnologias
+
+- **Python 3.10+**
+- **scikit-learn** — treinamento do modelo
+- **Pandas** — manipulação dos dados
+- **Gemini 2.0 Flash** — geração de insights com IA
+- **python-dotenv** — gerenciamento de variáveis de ambiente
