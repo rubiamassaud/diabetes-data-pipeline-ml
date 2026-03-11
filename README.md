@@ -1,114 +1,206 @@
-# 🩺 Diabetes Insight Pipeline
+Diabetes Insight Pipeline 🚀
+Um pequeno pipeline que treina um modelo de regressão logística para predizer a presença de diabetes (dataset Pima Indians) e, em seguida, usa a API da Groq para gerar um insight interpretativo em linguagem natural a partir dos pesos (feature importance) e da acurácia do modelo.
 
-Pipeline que treina um modelo de classificação de diabetes e gera interpretações em linguagem natural usando IA generativa (Gemini).
+Objetivo – Demonstrar como combinar Machine Learning tradicional (scikit‑learn) com LLMs (Groq) para criar relatórios automatizados e de fácil compreensão.
 
----
+📚 Sumário
+Seção	Descrição
+Visão geral	O que o projeto faz
+Requisitos	Dependências e ambiente
+Instalação	Como colocar tudo em funcionamento
+Configuração da API Groq	Variáveis de ambiente necessárias
+Como usar	Executando o pipeline passo‑a‑passo
+Saída esperada	Exemplo de resultado
+Estrutura de pastas	Organização dos arquivos
+Contribuição	Como melhorar este projeto
+Licença	Direitos de uso
+🎯 Visão geral
+Carrega o dataset
+diabetes.csv
 
-## 💡 Como funciona
+(colunas padrão do Pima Indians Diabetes Database).
+Treina um modelo de LogisticRegression usando as features:
+Glucose
 
-1. Carrega um dataset de diabetes em CSV
-2. Treina um modelo de **Regressão Logística** com as features mais relevantes
-3. Envia os pesos aprendidos para o **Gemini 2.0 Flash**
-4. Retorna uma análise interpretativa dos fatores de risco em linguagem humana
+,
+BMI
 
----
+,
+Age
 
-## 🗂️ Estrutura do projeto
+e
+DiabetesPedigreeFunction
 
-```
-diabetes-insight-pipeline/
-│
-├── diabetes_insight_pipeline.py  # Pipeline principal
-├── diabetes.csv                  # Dataset de entrada
-├── .env                          # Variáveis de ambiente (não versionar)
-├── requirements.txt              # Dependências do projeto
-└── README.md
-```
+.
+Calcula a acurácia e extrai os coeficientes (importância das variáveis).
+Envia essas informações para a API da Groq (modelo
+llama-3.3-70b-versatile
 
----
+por padrão).
+Recebe um texto em português que explica quais fatores mais influenciam o risco de diabetes e a qualidade do modelo.
+Tudo isso está encapsulado na classe
+DiabetesInsightPipeline
 
-## ⚙️ Instalação
+(arquivo
+pipeline.py
 
-**1. Clone o repositório**
-```bash
-git clone https://github.com/rubiamassaud/diabetes-insight-pipeline.git
-cd diabetes-insight-pipeline
-```
+).
 
-**2. Crie e ative um ambiente virtual**
-```bash
-python -m venv venv
-source venv/bin/activate      # Linux/macOS
-venv\Scripts\activate         # Windows
-```
-
-**3. Instale as dependências**
-```bash
-pip install -r requirements.txt
-```
-
-**4. Configure a variável de ambiente**
-
-Crie um arquivo `.env` na raiz do projeto:
-```env
-GEMINI_API_KEY=sua_chave_aqui
-```
-> Obtenha sua chave em [Google AI Studio](https://aistudio.google.com/app/apikey)
-
----
-
-## ▶️ Uso
-
-```bash
-python diabetes_insight_pipeline.py
-```
-
-**Saída esperada:**
-```
-⚙️ Treinando modelo...
-✅ Acurácia: 77.92%
-
-🤖 Gerando Insight com IA...
-⏳ Aguardando 10 segundos para respeitar a cota...
-------------------------------
-[Análise do Gemini sobre os fatores de risco]
-------------------------------
-```
-
----
-
-## 📊 Features utilizadas no modelo
-
-| Feature | Descrição |
-|---|---|
-| `Glucose` | Concentração de glicose no plasma |
-| `BMI` | Índice de massa corporal |
-| `Age` | Idade do paciente |
-| `DiabetesPedigreeFunction` | Histórico familiar de diabetes |
-
----
-
-## 📦 Dependências
-
-```
+🛠️ Requisitos
+Ferramenta	Versão mínima
+Python	3.9
+pip	21+
+Git (opcional)	—
+Bibliotecas Python
 pandas
 scikit-learn
 python-dotenv
-google-genai
-```
+groq
 
----
+Nota:
+groq
 
-## 📁 Dataset
+é o SDK oficial da Groq. Ele será instalado via
+pip
 
-O projeto utiliza o [Pima Indians Diabetes Dataset](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database), disponível no Kaggle.
+(ou
+uv
 
----
+/
+poetry
 
-## 🤖 Tecnologias
+se preferir).
 
-- **Python 3.10+**
-- **scikit-learn** — treinamento do modelo
-- **Pandas** — manipulação dos dados
-- **Gemini 2.0 Flash** — geração de insights com IA
-- **python-dotenv** — gerenciamento de variáveis de ambiente
+⚙️ Instalação
+# 1️⃣ Clone o repositório (ou copie os arquivos)
+git clone https://github.com/SEU_USUARIO/diabetes-insight-pipeline.git
+cd diabetes-insight-pipeline
+
+# 2️⃣ Crie e ative um ambiente virtual (recomendado)
+python -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+# .venv\Scripts\activate      # Windows
+
+# 3️⃣ Instale as dependências
+pip install -r requirements.txt
+
+Alternativas – Se usar
+uv
+
+ou
+poetry
+
+, basta adaptar o comando de instalação (ex.:
+uv pip install -r requirements.txt
+
+).
+
+Arquivo
+requirements.txt
+
+pandas
+scikit-learn
+python-dotenv
+groq
+
+🔐 Configuração da API Groq
+Crie uma conta em https://groq.com/ e obtenha sua API key.
+Na raiz do projeto, crie o arquivo
+.env
+
+com o seguinte conteúdo:
+# .env
+GROQ_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+Importante – Nunca compartilhe seu
+.env
+
+publicamente. Ele já está incluído no
+.gitignore
+
+.
+
+▶️ Como usar
+# Certifique‑se de que o .env está configurado e o ambiente virtual ativo
+python pipeline.py
+
+O script:
+
+Verifica a presença do
+diabetes.csv
+
+.
+Treina o modelo e imprime a acurácia.
+Aguarda 2 s (respeitando a taxa de requisição da Groq).
+Envia o prompt para a Groq e exibe o insight.
+Personalizando
+Dataset – Troque o caminho da variável
+CSV_PATH
+
+no final do arquivo ou passe como argumento (modifique o
+if __name__ == "__main__"
+
+conforme desejar).
+Features – Edite a lista
+self.features
+
+na classe para incluir/excluir variáveis.
+Modelo LLM – Altere
+model_name
+
+para outro modelo suportado (ex.:
+llama3-8b-8192
+
+,
+mixtral-8x7b-32768
+
+).
+📄 Saída esperada
+⚙️  Treinando modelo de classificação...
+✅  Acurácia do modelo: 78.33%
+
+🤖  Gerando insight com a Groq...
+
+--------------------------------------------------
+Como analista de dados, explique quais fatores aumentam o risco de diabetes...
+[texto gerado pela Groq em português]
+
+Fatores mais relevantes:
+- **Glucose**: alto nível de glicemia está fortemente associado ao risco.
+- **BMI**: índice de massa corporal acima da média eleva a probabilidade.
+- **Age**: risco aumenta com a idade.
+- **DiabetesPedigreeFunction**: indica histórico familiar e também tem peso significativo.
+
+A acurácia do modelo (78,33%) indica que ele captura bem a relação entre essas variáveis e o diagnóstico, embora ainda haja margem para melhorias (ex.: incluir outras features ou usar modelos mais complexos).
+--------------------------------------------------
+
+O texto será diferente a cada execução (devido à temperatura > 0), mas seguirá a mesma estrutura de explicação.
+
+📁 Estrutura de pastas
+diabetes-insight-pipeline/
+│
+├─ .env                 # <-- sua API key (não versionado)
+├─ .gitignore           # inclui .env, __pycache__, .venv, etc.
+├─ requirements.txt
+├─ diabetes.csv         # dataset Pima Indians (inclua ou baixe)
+├─ pipeline.py          # script principal (código que você enviou)
+└─ README.md            # <-- este arquivo
+
+🤝 Contribuição
+Fork o repositório
+Crie uma branch para sua feature/fix:
+git checkout -b minha-feature
+
+Commit suas mudanças com mensagens claras.
+Abra um Pull Request explicando o que foi adicionado/modificado.
+Ideias de melhorias
+Validação cruzada e métricas adicionais (ROC‑AUC, F1).
+Interface CLI com
+argparse
+
+para escolher dataset, modelo, ou número de features.
+Cache de respostas da Groq para evitar chamadas repetidas durante desenvolvimento.
+Dockerfile para facilitar o deploy em ambientes isolados.
+📜 Licença
+Este projeto está licenciado sob a MIT License – sinta‑se livre para usar, modificar e distribuir, desde que mantenha a atribuição original.
+
