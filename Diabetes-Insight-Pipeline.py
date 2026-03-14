@@ -107,10 +107,6 @@ class DiabetesInsightPipeline:
         # ------------------------------------------------------
         # 3️⃣ Chamada à API Groq (chat completion)
         # ------------------------------------------------------
-        # Escolha um modelo que você tenha permissão. Alguns exemplos:
-        # - "llama3-8b-8192"
-        # - "mixtral-8x7b-32768"
-        # - "gemma-2b-it"
         model_name = "llama-3.3-70b-versatile"
 
         try:
